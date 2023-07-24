@@ -3,5 +3,5 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 # Create your views here.
-def userLogin(request):
+def login_request(request):
     return render(request, 'auth/login.html', {})
