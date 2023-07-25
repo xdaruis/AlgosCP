@@ -11,7 +11,15 @@
   </head>
   <body>
     {% include 'navbar.html' %}
-    <!-- <div class="alert alert-success m-2" role="alert"></div> -->
+    {% if messages %}
+      <div class="container-fluid">
+        {% for message in messages %}
+          <div class="alert alert-warning" role="alert">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
     <br><br>
     <center>
       <div class="container-fluid">

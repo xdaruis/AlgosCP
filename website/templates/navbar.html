@@ -10,13 +10,14 @@
         <a class="nav-link" href="#">Features</a>
       </div>
       {% if user.is_authenticated %}
-      <div class="container-fluid">
-        <a class="nav-link d-flex justify-content-end" href="{% url 'logout' %}">Logout</a>
-      </div>
+        <div class="container-fluid">
+          <a class="nav-link d-flex justify-content-end" href="{% url 'logout' %}">Logout</a>
+        </div>
       {% else %}
-      <div class="container-fluid">
-        <a class="nav-link d-flex justify-content-end" href="{% url 'login' %}">Login</a>
-      </div>
+        <div class="container-fluid">
+          <a class="nav-link d-flex justify-content-end" href="{% url 'login' %}">Login</a>
+        </div>
       {% endif %}
+    </div>
   </div>
 </nav>
