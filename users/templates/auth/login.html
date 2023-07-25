@@ -1,7 +1,10 @@
 {% extends 'base.html'%}
 
 {% block content %}
-<form action="" method="POST">
+{% if user.is_authenticated%}
+<h1>You're already logged in</h1>
+{% else %}
+<form action="{% url 'login' %}" method="POST">
   {% csrf_token %}
   <div class="form-outline mb-4">
     <label class="form-label" for="form2Example1">Username</label>
@@ -18,8 +21,7 @@
   </div>
   <br>
   <!-- Register buttons -->
-  <p>Not a member? <a href="#!">Register</a>
-  </p>
+  <p>Not a member? <a href="{% url 'register' %}">Register</a></p>
   <p>or sign up with:</p>
   <a href="#" class="text-decoration-none">
     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-facebook" viewBox="0 0 16 16">
@@ -45,5 +47,6 @@
     </svg>
   </a>
   <br><br>
-</form> 
+</form>
+{% endif %}
 {% endblock %}

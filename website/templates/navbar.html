@@ -9,8 +9,14 @@
         <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
         <a class="nav-link" href="#">Features</a>
       </div>
+      {% if user.is_authenticated %}
       <div class="container-fluid">
-        <a class="nav-link d-flex justify-content-end" href="{% url 'login' %}">LogIn</a>
+        <a class="nav-link d-flex justify-content-end" href="{% url 'logout' %}">Logout</a>
       </div>
+      {% else %}
+      <div class="container-fluid">
+        <a class="nav-link d-flex justify-content-end" href="{% url 'login' %}">Login</a>
+      </div>
+      {% endif %}
   </div>
 </nav>

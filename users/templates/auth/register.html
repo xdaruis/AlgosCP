@@ -1,0 +1,15 @@
+{% extends 'base.html'%}
+
+{% block content %}
+{% if user.is_authenticated%}
+  <h1>You're already logged in</h1>
+{% else %}
+  <div class="container-fluid">
+    <form action="" method="POST">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Register" class="btn btn-primary"/>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
