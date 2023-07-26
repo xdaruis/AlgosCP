@@ -12,7 +12,8 @@
   <body>
     {% include 'navbar.html' %}
     {% if messages %}
-      <div class="container-fluid">
+      <br>
+      <div class="container">
         {% for message in messages %}
           <div class="alert alert-warning" role="alert">
             {{ message }}
@@ -22,7 +23,7 @@
     {% endif %}
     <br><br>
     <center>
-      <div class="container-fluid">
+      <div class="container">
         {% block content %}
         {% endblock %}
       </div>

@@ -7,15 +7,15 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-        <a class="nav-link" href="#">Features</a>
+        <a class="nav-link active" href="#">Problems</a>
       </div>
       {% if user.is_authenticated %}
-        <div class="container-fluid">
-          <a class="nav-link d-flex justify-content-end" href="{% url 'logout' %}">Logout</a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-link active" href="{% url 'logout' %}">Logout</a>
         </div>
       {% else %}
-        <div class="container-fluid">
-          <a class="nav-link d-flex justify-content-end" href="{% url 'login' %}">Login</a>
+        <div class="navbar-nav ms-auto">
+          <a class="nav-item nav-link active" href="{% url 'login' %}">Login</a>
         </div>
       {% endif %}
     </div>
