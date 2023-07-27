@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  {% if user.is_authenticated%}
+    {% if profile %}
+    <div class="card" style="width: 18rem;">
+      <img src="{{ profile.image.url }}" width="160" height="200" class="card-img-top" alt="User_Image">
+      <div class="card-body">
+        <h5 class="card-title">{{ profile.user }}</h5>
+        <p class="card-text">{{ profile.description }}</p>
+      </div>
+    </div>
+    {% else %}
+      <h1>Profile not found!</h1>
+    {% endif %}
+  {% else %}
+    <h1>Login first!</h1>
+  {% endif %}
+{% endblock %}
