@@ -36,7 +36,7 @@ def register_request(request):
 
 def profile(request, username):
     if request.user.is_authenticated:
-        profile = Profile.objects.get(user_id = request.user.id)
+        user = User.objects.get(username = username)
+        profile = Profile.objects.get(user_id = user)
         return render(request, 'profile.html', {'profile': profile})
-    messages.success(request, ("You Must Be Logged In To View This Page..."))
-    return redirect('login')
+    return render(request, 'permissions.html', {})
