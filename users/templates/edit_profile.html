@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container-sm">
+    <form action="" method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit" value="Save" class="btn btn-success"/>
+      <input type="reset" value="Undo" class="btn btn-danger"/>
+    </form>
+  </div>
+  <br>
+{% endblock %}

@@ -9,6 +9,10 @@
         <p class="card-text">{{ profile.description }}</p>
       </div>
     </div>
+    {% if profile.user == request.user %}
+      <br>
+      <a href="{% url 'edit-profile' %}" class="btn btn-primary">Edit</a>
+    {% endif %}
   {% else %}
     <h1>Profile not found!</h1>
   {% endif %}
