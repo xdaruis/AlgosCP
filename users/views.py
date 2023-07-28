@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import SignUpForm
@@ -13,13 +13,13 @@ def login_request(request):
         user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request, user)
-            return render(request, 'index.html', {})
+            return redirect('index')
         messages.success(request, ('Wrong password or username!'))
     return render(request, 'auth/login.html', {})
 
 def logout_request(request):
     logout(request)
-    return render(request, 'auth/login.html', {})
+    return redirect('login')
 
 def register_request(request):
     form = SignUpForm()
@@ -30,13 +30,17 @@ def register_request(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password1']
             user = authenticate(username = username, password = password)
-            login(request,user)
+            login(request, user)
             return redirect('index')
     return render(request, 'auth/register.html', {'form': form})
 
 def profile(request, username):
     if request.user.is_authenticated:
-        user = User.objects.get(username = username)
-        profile = Profile.objects.get(user_id = user)
+        profile = None
+        try:
+            user = User.objects.get(username = username)
+            profile = Profile.objects.get(user_id = user)
+        except:
+            pass
         return render(request, 'profile.html', {'profile': profile})
-    return render(request, 'permissions.html', {})
+    return render(request, 'login_required.html', {})
