@@ -6,4 +6,5 @@ ace.edit(editor, {
     tabSize: 4,
     useSoftTabs: true,
     keyboardHandler: 'ace/keyboard/vscode',
+    wrapWithQuotes: true,
 });
