@@ -9,6 +9,9 @@
         right: 0;
         bottom: 0;
         left: 0;
+        width: 100%;
+        height: 400px;
+        font-size: 17px;
     }
   </style>
   {% if user.is_superuser %}
@@ -34,26 +37,11 @@
     </fieldset>
   {% endif %}
   <br><br>
-  <p>Your Code:</p>
-  <!-- <textarea class="form-control" name="" id="" cols="30" rows="10"></textarea>
-  <br><br> -->
-
+  <input type="Submit" value="Submit" class="btn btn-success">
   <div class="container">
-    <div id="editor">
-      function foo(items) {
-        var x = "All this is syntax highlighted";
-        return x;
-      }
-    </div>
+    <div id="editor"></div>
   </div>
-    
   <br><br>
-  <script src="{% static 'ace.js' %}"></script>
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/mode-c_cpp.min.js" type="text/javascript" charset="utf-8"></script> -->
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js"></script> -->
-  <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/cpp");
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js" integrity="sha512-W2EhLZb9bxEATRhug+NU1OHCaM0hovRJbR7BvUNEytEWYJKxZiL4fGz3tiPpid0nycdwW7EnGlSonxvrs+EU6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="{% static 'script.js' %}"></script>
 {% endblock %}
