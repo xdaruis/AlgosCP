@@ -1,3 +1,9 @@
 h1 {
     color: blue;
 }
+
+body {
+    background-color: rgb(246, 246, 246);
+    font-size: 17px;
+    font-family: monospace, consolas, arial;
+}

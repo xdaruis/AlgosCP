@@ -6,6 +6,7 @@ class Problem(models.Model):
     description = models.TextField()
     example = models.TextField(blank=True)
     constraints = models.TextField(blank=True)
+    template = models.TextField(blank=False, default='')
 
     def __str__(self):
         return self.name

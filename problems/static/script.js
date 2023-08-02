@@ -8,3 +8,12 @@ ace.edit(editor, {
     keyboardHandler: 'ace/keyboard/vscode',
     wrapWithQuotes: true,
 });
+
+resize_boxes();
+
+function resize_boxes() {
+    for (let i = 1; i <= 3; ++i) {
+        element = document.getElementById("note" + i);
+        element.style.height = (element.scrollHeight + 2) + "px";
+    }
+}
