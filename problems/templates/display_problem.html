@@ -30,7 +30,6 @@
     <form action="{% url 'send' problem.name %}" method="POST" class="card-body">
       {% csrf_token %}
       <input type="Submit" value="Submit" class="btn btn-success">
-      <button type="button" class="btn btn-success" onclick="display();">X</button>
       <div class="container">
         <div id="editor">{{ problem.template }}</div>
       </div>
