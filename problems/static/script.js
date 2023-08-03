@@ -9,11 +9,10 @@ ace.edit(editor, {
     wrapWithQuotes: true,
 });
 
-resize_boxes();
+resize_element();
 
-function resize_boxes() {
-    for (let i = 1; i <= 3; ++i) {
-        element = document.getElementById("note" + i);
-        element.style.height = (element.scrollHeight + 2) + "px";
-    }
+function resize_element() {
+    element = document.getElementById("auto-resize");
+    element.style.height = (element.scrollHeight + 2) + "px";
 }
+

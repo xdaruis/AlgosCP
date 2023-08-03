@@ -16,6 +16,6 @@ def send_problem(request, problem_name):
     response['Content-Disposition'] = 'attachement; filename=solution.cpp'
 
     # lines = [ace.edit('editor').getSession().getValue()]
-    lines = [Problem.objects.get(name = problem_name).template]
+    # lines = [request.POST]
     response.writelines(lines)
     return response

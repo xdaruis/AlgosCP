@@ -11,7 +11,6 @@
       </div>
       {% if user.is_authenticated %}
         <div class="navbar-nav ms-auto">
-          <!-- <a class="nav-link active" href="{% url 'profile' request.user.id %}">{{ user }}</a> -->
           <a class="nav-link active" href="{% url 'profile' request.user %}">
             <img src="{{ user.profile.image.url }}" width=30 height=30 class="rounded-circle" alt="{{ profile.user.username }}">
           </a>

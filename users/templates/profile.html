@@ -1,19 +1,23 @@
 {% extends 'base.html' %}
+{% load markdown_extras %}
 
 {% block content %}
-  {% if profile %}
-    <div class="card" style="width: 18rem;">
-      <img src="{{ profile.image.url }}" width="200" height="200" class="card-img-top" alt="User_Image">
-      <div class="card-body">
-        <h5 class="card-title">{{ profile.user }}</h5>
-        <p class="card-text">{{ profile.description }}</p>
+  <center>
+    {% if profile %}
+      <div class="card" style="width: 18rem;">
+        <img src="{{ profile.image.url }}" width="200" height="200" class="card-img-top" alt="User_Image">
+        <div class="card-body">
+          <h5 class="card-title">{{ profile.user }}</h5>
+          <p style="text-align:left" class="card-text text-left">{{ profile.description|markdown|safe }}</p>
+        </div>
       </div>
-    </div>
-    {% if profile.user == request.user %}
-      <br>
-      <a href="{% url 'edit-profile' %}" class="btn btn-primary">Edit</a>
+      {% if profile.user == request.user %}
+        <br>
+          <a href="{% url 'edit-profile' %}" class="btn btn-primary">Edit</a>
+        {% endif %}
+    {% else %}
+      <h1>Profile not found!</h1>
     {% endif %}
-  {% else %}
-    <h1>Profile not found!</h1>
-  {% endif %}
+  </center>
+  <br/>
 {% endblock %}
