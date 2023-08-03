@@ -1,7 +1,7 @@
-let editor = document.getElementById('editor');
+const editor = document.getElementById('editor');
 
 ace.edit(editor, {
-    theme: 'ace/theme/chrome',
+    theme: 'ace/theme/eclipse',
     mode: 'ace/mode/c_cpp',
     tabSize: 4,
     useSoftTabs: true,
@@ -16,3 +16,6 @@ function resize_element() {
     element.style.height = (element.scrollHeight + 2) + "px";
 }
 
+function test() {
+    alert(ace.edit('editor').getSession().getValue());
+}

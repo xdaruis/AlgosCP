@@ -17,5 +17,5 @@ def send_problem(request, problem_name):
 
     # lines = [ace.edit('editor').getSession().getValue()]
     # lines = [request.POST]
-    response.writelines(lines)
+    response.writelines(request.POST)
     return response

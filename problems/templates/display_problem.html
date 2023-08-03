@@ -5,11 +5,11 @@
 {% block content %}
   <link rel="stylesheet" href="{% static 'editor.css' %}">
   <center>
-  {% if user.is_superuser %}
+    {% if user.is_superuser %}
       <a class="btn btn-success" href="/admin/problems/problem/{{ problem.id }}/change/">Edit</a>
       <br><br>
-      {% endif %}
-      <h2>{{ problem.name|title }}</h2>
+    {% endif %}
+    <h2>{{ problem.name|title }}</h2>
   </center>
   <br>
   <div class="card">
@@ -20,7 +20,7 @@
       <div class="card-body">{{ problem.constraints|markdown|safe }}</div>
     {% endif %}
     {% if problem.example %}
-      <h3 class="card-body text-left">Examples:</h3>
+      <h3 class="card-body">Examples:</h3>
       <fieldset disabled class="card-body">
         <textarea id="auto-resize" class="form-control" readonly>{{ problem.example }}</textarea>
       </fieldset>
@@ -31,6 +31,7 @@
       {% csrf_token %}
       <center>
         <input type="Submit" value="Submit" class="btn btn-success">
+        <button type="button" class="btn btn-primary" onclick="test()">Test</button>
       </center>
       <div class="container">
         <div id="editor">{{ problem.template }}</div>
