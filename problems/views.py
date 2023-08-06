@@ -4,7 +4,7 @@ from django.http import HttpResponse
 
 # Create your views here.
 def list(request):
-    problems = Problem.objects.all()
+    problems = Problem.objects.all().order_by('pk')
     return render(request, 'problems_list.html', {'problems': problems})
 
 def display_problem(request, problem_name):

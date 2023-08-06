@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% load markdown_extras %}
 
 {% block content %}
   <center>
@@ -8,7 +7,7 @@
         <img src="{{ profile.image.url }}" width="200" height="200" class="card-img-top" alt="User_Image">
         <div class="card-body">
           <h5 class="card-title">{{ profile.user }}</h5>
-          <p style="text-align:left" class="card-text text-left">{{ profile.description|markdown|safe }}</p>
+          <p style="text-align:left" class="card-text text-left">{{ profile.description|safe }}</p>
         </div>
       </div>
       {% if profile.user == request.user %}

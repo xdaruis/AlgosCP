@@ -2,28 +2,22 @@
 {% load static %}
 
 {% block content %}
-  <link rel="stylesheet" href="{% static 'editor.css' %}">
+  <link rel="stylesheet" href="{% static 'problems_styling.css' %}">
   <center>
     {% if user.is_superuser %}
       <a class="btn btn-success" href="/admin/problems/problem/{{ problem.id }}/change/">Edit</a>
       <br><br>
     {% endif %}
-    <h2>{{ problem.name|title }}</h2>
+    <div class="card">
+      <div class="card-body">
+        <pre></pre>
+        <h2>{{ problem.title }}</h2>
+      </div>
+    </div>
   </center>
   <br>
   <div class="card">
-    <h3 class="card-body">Description:</h3>
     <div class="card-body">{{ problem.description|safe }}</div>
-    {% if problem.constraints %}
-      <h3 class="card-body">Constraints:</h3>
-      <div class="card-body">{{ problem.constraints|safe }}</div>
-    {% endif %}
-    {% if problem.example %}
-      <h3 class="card-body">Examples:</h3>
-      <fieldset disabled class="card-body">
-        <textarea id="auto-resize" class="form-control" readonly>{{ problem.example|safe }}</textarea>
-      </fieldset>
-    {% endif %}
     <hr/>
     <br>
     <form action="{% url 'send' problem.name %}" method="POST" class="card-body">

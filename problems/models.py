@@ -4,9 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 class Problem(models.Model):
     name = models.CharField(max_length=50, unique=True, null=False, blank=False, default='lowercase letters only')
+    title = models.CharField(max_length=50, null=False, blank=False, default='')
     description = models.TextField()
-    example = models.TextField(blank=True)
-    constraints = models.TextField(blank=True)
     template = models.TextField(blank=False, default='')
 
     def __str__(self):

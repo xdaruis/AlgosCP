@@ -9,12 +9,12 @@ ace.edit(editor, {
     wrapWithQuotes: true,
 });
 
-resize_element();
+// resize_element();
 
-function resize_element() {
-    element = document.getElementById("auto-resize");
-    element.style.height = (element.scrollHeight + 2) + "px";
-}
+// function resize_element() {
+//     element = document.getElementById("auto-resize");
+//     element.style.height = (element.scrollHeight + 2) + "px";
+// }
 
 function test() {
     alert(ace.edit('editor').getSession().getValue());

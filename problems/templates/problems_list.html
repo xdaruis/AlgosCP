@@ -20,7 +20,7 @@
         <tr>
           <!-- <th scope="row">Categ</th> -->
           <td>
-              <a class="nav-link" href="{% url 'display_problem' problem.name|slugify %}">{{ problem.name|title }}</a>
+              <a class="nav-link" href="{% url 'display_problem' problem.name|slugify %}">{{ problem.title }}</a>
           </td>
         </tr>
         {% endfor %}
