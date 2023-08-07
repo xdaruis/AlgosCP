@@ -11,4 +11,4 @@ Built using Django and Python, this web application lets users solve algorithmic
 - Submit and view your solutions.
 - **Note: The code evaluator for submitted solutions is currently in a Work in Progress state.**
 
-Sharpen your coding skills and practice problem-solving with this platform. Join now and start tackling algorithmic challenges!
+Enhance your coding skills and refine your problem-solving abilities with this platform. Explore algorithmic challenges at your own pace and elevate your coding capabilities!
