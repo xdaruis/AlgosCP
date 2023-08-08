@@ -5,6 +5,7 @@
     font-size: 17px;
     border-style: groove;
     border-width: thin;
+    border-color: rgb(236, 236, 236);
 }
 
 pre[class=""] {
