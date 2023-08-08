@@ -1,4 +1,4 @@
-const editor = document.getElementById('editor');
+let editor = document.getElementById('editor');
 
 ace.edit(editor, {
     theme: 'ace/theme/eclipse',
@@ -19,3 +19,7 @@ ace.edit(editor, {
 function test() {
     alert(ace.edit('editor').getSession().getValue());
 }
+
+document.addEventListener('submit', () => {
+    document.getElementById("code-editor").innerHTML = ace.edit('editor').getSession().getValue();
+});

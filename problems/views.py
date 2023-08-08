@@ -14,8 +14,5 @@ def display_problem(request, problem_name):
 def send_problem(request, problem_name):
     response = HttpResponse(content_type='text/plain')
     response['Content-Disposition'] = 'attachement; filename=solution.cpp'
-
-    # lines = [ace.edit('editor').getSession().getValue()]
-    # lines = [request.POST]
-    response.writelines(request.POST)
+    response.writelines(request.POST['code'])
     return response

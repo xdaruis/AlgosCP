@@ -23,13 +23,14 @@
     <form action="{% url 'send' problem.name %}" method="POST" class="card-body">
       {% csrf_token %}
       <center>
+        <textarea id="code-editor" name="code" style="display: none;"></textarea>
         <input type="Submit" value="Submit" class="btn btn-success">
-        <button type="button" class="btn btn-primary" onclick="test()">Test</button>
+        <!-- <button type="button" class="btn btn-primary" onclick="test()">Test</button> -->
       </center>
-      <div class="container">
-        <div id="editor">{{ problem.template }}</div>
-      </div>
     </form>
+    <div class="container">
+      <div id="editor">{{ problem.template }}</div>
+    </div>
   </div>
   <br><br>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js" integrity="sha512-W2EhLZb9bxEATRhug+NU1OHCaM0hovRJbR7BvUNEytEWYJKxZiL4fGz3tiPpid0nycdwW7EnGlSonxvrs+EU6g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
