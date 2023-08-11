@@ -1,4 +1,4 @@
-# Algorithmic Coding Playground
+# Auto Algorithm Grading Practice Platform
 
 Built using Django and Python, this web application lets users solve algorithmic problems in an interactive environment.
 
