@@ -13,7 +13,8 @@ def login_request(request):
         user = authenticate(request, username = username, password = password)
         if user is not None:
             login(request, user)
-            return redirect('index')
+            messages.success(request, (f'Hello {username}! Let\'s start coding'))
+            return redirect('list')
         messages.success(request, ('Wrong password or username!'))
     return render(request, 'auth/login.html', {})
 
