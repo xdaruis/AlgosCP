@@ -7,7 +7,7 @@ def test_solution():
     try:
         move_file_from_downloads = f"mv /home/daruis/Downloads/{problem_id}.cpp /home/daruis/PersProject/AlgosCP/Evaluator"
         subprocess.run(move_file_from_downloads, shell=True, check=True)
-        add_input(problem_id)
+        add_testcases_loop(problem_id)
     except:
         print("Files Missing! Internal server error")
         return
@@ -29,7 +29,7 @@ def test_solution():
     cleanup_files = f"rm {base_path}/{problem_id} {base_path}/{problem_id}.cpp {base_path}/{problem_id}.out"
     subprocess.run(cleanup_files, shell=True, check=True)
 
-def add_input(problem_id):
+def add_testcases_loop(problem_id):
     cpp_filename = f"{problem_id}.cpp"
     start_testing = f'freopen("Inputs/{problem_id}.in", "r", stdin); int __tests; cin >> __tests; while(__tests--) {{'
     end_testing = ' cout << " "; }'
