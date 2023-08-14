@@ -1,4 +1,4 @@
-# Auto Algorithm Grading Practice Platform
+# Practice Platform With Automated Algorithm Grading
 
 Built using Django and Python, this web application lets users solve algorithmic problems in an interactive environment.
 
