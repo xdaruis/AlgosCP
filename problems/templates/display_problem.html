@@ -20,12 +20,11 @@
     <div class="card-body">{{ problem.description|safe }}</div>
     <hr/>
     <br>
-    <form action="{% url 'send' problem.name %}" method="POST" class="card-body">
+    <form action="{% url 'send' problem.id %}" method="POST" class="card-body">
       {% csrf_token %}
       <center>
         <textarea id="code-editor" name="code" style="display: none;"></textarea>
         <input type="Submit" value="Submit" class="btn btn-success">
-        <!-- <button type="button" class="btn btn-primary" onclick="test()">Test</button> -->
       </center>
     </form>
     <div class="container">

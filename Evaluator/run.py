@@ -2,37 +2,36 @@ import subprocess
 import re
 
 def test_solution():
+    problem_id = '4'
     base_path = "/home/daruis/PersProject/AlgosCP/Evaluator"
     try:
-        move_file_from_downloads = "mv /home/daruis/Downloads/solution.cpp /home/daruis/PersProject/AlgosCP/Evaluator"
+        move_file_from_downloads = f"mv /home/daruis/Downloads/{problem_id}.cpp /home/daruis/PersProject/AlgosCP/Evaluator"
         subprocess.run(move_file_from_downloads, shell=True, check=True)
-        add_input()
+        add_input(problem_id)
     except:
         print("Files Missing! Internal server error")
         return
     try:
-        compile_program = f"g++ {base_path}/solution.cpp -o {base_path}/solution"
+        compile_program = f"g++ {base_path}/{problem_id}.cpp -o {base_path}/{problem_id}"
         subprocess.run(compile_program, shell=True, check=True)
-        # memory = 1024 * 256
-        # memory_limit = f"ulimit -v {memory}"
-        execute_program = f"timeout 5 {base_path}/solution > {base_path}/solution.out"
+        execute_program = f"timeout 5 {base_path}/{problem_id} > {base_path}/{problem_id}.out"
         subprocess.run(execute_program, shell=True, check=True)
-        compare_results = f"diff {base_path}/correct_solution.txt {base_path}/solution.out > {base_path}/errors.txt"
+        compare_results = f"diff {base_path}/correct_{problem_id}.txt {base_path}/{problem_id}.out > {base_path}/errors.txt"
         try:
             subprocess.run(compare_results, shell=True, check=True)
         except:
-            print("WRONG ANSWER")
+            print("WRONG ANSWER!")
     except subprocess.CalledProcessError as e:
         if e.returncode == 124:
             print("Time limit exceeded!")
         else:
-            print("Failed Compilation")
-    cleanup_files = f"rm {base_path}/solution {base_path}/solution.cpp {base_path}/solution.out"
+            print("Failed Compilation!")
+    cleanup_files = f"rm {base_path}/{problem_id} {base_path}/{problem_id}.cpp {base_path}/{problem_id}.out"
     subprocess.run(cleanup_files, shell=True, check=True)
 
-def add_input():
-    cpp_filename = "solution.cpp"
-    start_testing = 'freopen("test_cases.in", "r", stdin); int _test; cin >> _test; while(_test--) {'
+def add_input(problem_id):
+    cpp_filename = f"{problem_id}.cpp"
+    start_testing = f'freopen("test_cases_{problem_id}.in", "r", stdin); int __tests; cin >> __tests; while(__tests--) {{'
     end_testing = ' cout << " "; }'
     with open(cpp_filename, 'r') as cpp_file:
         cpp_content = cpp_file.read()
