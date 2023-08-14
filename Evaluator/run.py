@@ -2,7 +2,7 @@ import subprocess
 import re
 
 def test_solution():
-    problem_id = '4'
+    problem_id = '1'
     base_path = "/home/daruis/PersProject/AlgosCP/Evaluator"
     try:
         move_file_from_downloads = f"mv /home/daruis/Downloads/{problem_id}.cpp /home/daruis/PersProject/AlgosCP/Evaluator"
@@ -16,7 +16,7 @@ def test_solution():
         subprocess.run(compile_program, shell=True, check=True)
         execute_program = f"timeout 5 {base_path}/{problem_id} > {base_path}/{problem_id}.out"
         subprocess.run(execute_program, shell=True, check=True)
-        compare_results = f"diff {base_path}/correct_{problem_id}.txt {base_path}/{problem_id}.out > {base_path}/errors.txt"
+        compare_results = f"diff {base_path}/DesiredOutputs/{problem_id}.out {base_path}/{problem_id}.out > {base_path}/errors.txt"
         try:
             subprocess.run(compare_results, shell=True, check=True)
         except:
@@ -31,7 +31,7 @@ def test_solution():
 
 def add_input(problem_id):
     cpp_filename = f"{problem_id}.cpp"
-    start_testing = f'freopen("test_cases_{problem_id}.in", "r", stdin); int __tests; cin >> __tests; while(__tests--) {{'
+    start_testing = f'freopen("Inputs/{problem_id}.in", "r", stdin); int __tests; cin >> __tests; while(__tests--) {{'
     end_testing = ' cout << " "; }'
     with open(cpp_filename, 'r') as cpp_file:
         cpp_content = cpp_file.read()
