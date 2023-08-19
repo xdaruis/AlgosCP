@@ -17,9 +17,9 @@
           {% for submission in submissions %}
             <tr>
               <th scope="row">{{ submission.id }}</th>
-              <th scope="row">{{ submission.date|date:'d/m/Y' }}</th>
+              <th class="col-2" scope="row">{{ submission.date|date:'d/m/Y' }}</th>
               <td>
-                <a class="nav-link" href="{% url 'submission' submission.id %}">{{ submission.problem }}</a>
+                <a class="nav-link" href="{% url 'submission' submission.id %}">{{ submission.problem.title }}</a>
               </td>
               <td>
                 <a class="nav-link" >{{ submission.user }}</a>
