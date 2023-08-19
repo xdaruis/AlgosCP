@@ -5,5 +5,6 @@ urlpatterns = [
     path('problems/', views.list, name='list'),
     path('problems/<problem_name>/', views.display_problem, name='display_problem'),
     path('send/<problem_id>/', views.send_problem, name='send'),
+    path('submission/<submission_id>/', views.view_submission, name='submission'),
     path('history/', views.history, name='history'),
 ]

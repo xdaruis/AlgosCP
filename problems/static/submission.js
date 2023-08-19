@@ -7,8 +7,6 @@ ace.edit(editor, {
     useSoftTabs: true,
     keyboardHandler: 'ace/keyboard/vscode',
     wrapWithQuotes: true,
-});
-
-document.addEventListener('submit', () => {
-    document.getElementById("code-editor").innerHTML = ace.edit('editor').getSession().getValue();
+    setUseWorker: false,
+    readOnly: true,
 });

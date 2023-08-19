@@ -2,28 +2,34 @@
 
 {% block content %}
   <center>
-  {% if submissions %}
-    <table class="table table-hover table-bordered border-secondary table-sm caption-top">
-      <caption>List of submissions</caption>
-      <thead>
-        <tr>
-          <th scope="col">Date</th>
-          <th scope="col">Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for submission in submissions %}
+    {% if submissions %}
+      <table class="table table-hover table-bordered border-secondary table-sm caption-top">
+        <caption>List of submissions</caption>
+        <thead>
           <tr>
-            <th scope="row">{{ submission.date|date:"d/M/Y" }}</th>
-            <td>
-            <a class="nav-link" >{{ submission.problem }}</a>
-          </td>
+            <th scope="col">id</th>
+            <th scope="col">Date</th>
+            <th scope="col">Name</th>
+            <th scope="col">Author</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  {% else %}
-      <h1>You have no submissions yet!</h1>
-  {% endif %}
+        </thead>
+        <tbody>
+          {% for submission in submissions %}
+            <tr>
+              <th scope="row">{{ submission.id }}</th>
+              <th scope="row">{{ submission.date|date:'d/m/Y' }}</th>
+              <td>
+                <a class="nav-link" href="{% url 'submission' submission.id %}">{{ submission.problem }}</a>
+              </td>
+              <td>
+                <a class="nav-link" >{{ submission.user }}</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <h2>You have no submissions yet!</h2>
+    {% endif %}
   </center>
 {% endblock %}

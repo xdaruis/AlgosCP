@@ -28,7 +28,7 @@ def send_problem(request, problem_id):
                 submission.user = request.user
                 submission.problem = Problem.objects.get(pk = problem_id)
                 submission.save()
-                return redirect('index') # RETURN EVALUATOR #
+                return redirect('submission', submission_id = submission.id)
         messages.success(request, ('Your submission is empty!'))
         problem_name = Problem.objects.get(pk = problem_id).name
         return redirect('display_problem', problem_name = problem_name)
@@ -39,3 +39,10 @@ def history(request):
         submissions = Submission.objects.filter(user = request.user).order_by('-date')
         return render(request, 'history.html', {'submissions':submissions})
     return render(request, 'login_required.html', {})
+
+def view_submission(request, submission_id):
+    submission = Submission.objects.get(pk = submission_id)
+    if request.user == submission.user:
+        return render(request, 'display_submission.html', {'submission': submission})
+    messages.success(request, ("ACCESS DENIED!"))
+    return redirect('index')
