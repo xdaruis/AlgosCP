@@ -7,6 +7,8 @@ class Problem(models.Model):
     title = models.CharField(max_length=50, null=False, blank=False, default='')
     description = models.TextField()
     template = models.TextField(blank=False, default='')
+    input = models.TextField(default='')
+    correct_output = models.TextField(default='')
 
     def __str__(self):
         return self.name
@@ -14,7 +16,7 @@ class Problem(models.Model):
 class Submission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE, default=1)
-    code = models.TextField()
+    code = models.TextField(null=False, blank=False)
     date = models.DateTimeField(auto_now_add=True)
     STATUS = [
         ("P", "Passed"),
@@ -22,4 +24,4 @@ class Submission(models.Model):
     ]
 
     def __str__(self):
-        return str(self.user.username) + ' ' + str(self.problem.name)
+        return str(self.user.username) + ' ' + str(self.problem.name) + ' ' + str(self.date)

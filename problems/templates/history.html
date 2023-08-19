@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <center>
+  {% if submissions %}
+    <table class="table table-hover table-bordered border-secondary table-sm caption-top">
+      <caption>List of submissions</caption>
+      <thead>
+        <tr>
+          <th scope="col">Date</th>
+          <th scope="col">Name</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for submission in submissions %}
+          <tr>
+            <th scope="row">{{ submission.date|date:"d/M/Y" }}</th>
+            <td>
+            <a class="nav-link" >{{ submission.problem }}</a>
+          </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+      <h1>You have no submissions yet!</h1>
+  {% endif %}
+  </center>
+{% endblock %}

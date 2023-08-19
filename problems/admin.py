@@ -6,6 +6,6 @@ from django_summernote.admin import SummernoteModelAdmin
 admin.site.register(Submission)
 
 class SomeModelAdmin(SummernoteModelAdmin):
-    summernote_fields = ('description', 'constraints')
+    summernote_fields = ('description')
 
 admin.site.register(Problem, SomeModelAdmin)
