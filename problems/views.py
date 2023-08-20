@@ -7,11 +7,11 @@ from .forms import SubmissionForm
 # Create your views here.
 def list(request):
     problems = Problem.objects.all().order_by('pk')
-    return render(request, 'problems_list.html', {'problems': problems})
+    return render(request, 'problems/problems_list.html', {'problems': problems})
 
 def display_problem(request, problem_name):
     problem = Problem.objects.get(name = problem_name.replace('-', ' '))
-    return render(request, 'display_problem.html', {'problem': problem})
+    return render(request, 'problems/display_problem.html', {'problem': problem})
 
 def send_problem(request, problem_id):
     if request.user.is_authenticated:
@@ -31,12 +31,12 @@ def send_problem(request, problem_id):
 def history(request):
     if request.user.is_authenticated:
         submissions = Submission.objects.filter(user = request.user).order_by('-date')
-        return render(request, 'history.html', {'submissions':submissions})
+        return render(request, 'submissions/history.html', {'submissions':submissions})
     return render(request, 'login_required.html', {})
 
 def view_submission(request, submission_id):
     submission = Submission.objects.get(pk = submission_id)
     if request.user == submission.user:
-        return render(request, 'display_submission.html', {'submission': submission})
+        return render(request, 'submissions/display_submission.html', {'submission': submission})
     messages.success(request, ("ACCESS DENIED!"))
     return redirect('index')
