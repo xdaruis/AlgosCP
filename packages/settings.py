@@ -84,21 +84,14 @@ WSGI_APPLICATION = 'packages.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'website-database',
+        'USER': 'postgres',
+        'PASSWORD': os.getenv("PASSWORD"),
+        'PORT': '5432',
+        'HOST': 'localhost'
     }
 }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'website-database',
-#         'USER': 'postgres',
-#         'PASSWORD': os.getenv("PASSWORD"),
-#         'PORT': '5432',
-#         'HOST': 'localhost'
-#     }
-# }
 
 
 # Password validation
