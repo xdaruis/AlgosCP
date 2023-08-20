@@ -11,14 +11,12 @@
       <caption>List of problems</caption>
       <thead>
         <tr>
-          <!-- <th scope="col">Category</th> -->
           <th scope="col">Name</th>
         </tr>
       </thead>
       <tbody>
         {% for problem in problems %}
         <tr>
-          <!-- <th scope="row">Categ</th> -->
           <td>
               <a class="nav-link" href="{% url 'display_problem' problem.name|slugify %}">{{ problem.title }}</a>
           </td>

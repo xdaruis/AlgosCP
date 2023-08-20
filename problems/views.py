@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
+from django.template.defaultfilters import slugify
+from django.contrib import messages
 from .models import Problem, Submission
 from .forms import SubmissionForm
-from django.http import HttpResponse
-from django.contrib import messages
 
 # Create your views here.
 def list(request):
@@ -12,12 +12,6 @@ def list(request):
 def display_problem(request, problem_name):
     problem = Problem.objects.get(name = problem_name.replace('-', ' '))
     return render(request, 'display_problem.html', {'problem': problem})
-
-# def send_problem(request, problem_id):
-#     response = HttpResponse(content_type='text/plain')
-#     response['Content-Disposition'] = f'attachement; filename={problem_id}.cpp'
-#     response.writelines(request.POST['code'])
-#     return response
 
 def send_problem(request, problem_id):
     if request.user.is_authenticated:
@@ -31,7 +25,7 @@ def send_problem(request, problem_id):
                 return redirect('submission', submission_id = submission.id)
         messages.success(request, ('Your submission is empty!'))
         problem_name = Problem.objects.get(pk = problem_id).name
-        return redirect('display_problem', problem_name = problem_name)
+        return redirect('display_problem', problem_name = slugify(problem_name))
     return render(request, 'login_required.html', {})
 
 def history(request):
