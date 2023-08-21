@@ -26,8 +26,8 @@ def test_solution():
             print("Time limit exceeded!")
         else:
             print("Failed Compilation!")
-    cleanup_files = f"rm {base_path}/{problem_id} {base_path}/{problem_id}.cpp {base_path}/{problem_id}.out"
-    subprocess.run(cleanup_files, shell=True, check=True)
+    # cleanup_files = f"rm {base_path}/{problem_id} {base_path}/{problem_id}.cpp {base_path}/{problem_id}.out"
+    # subprocess.run(cleanup_files, shell=True, check=True)
 
 def add_testcases_loop(problem_id):
     cpp_filename = f"{problem_id}.cpp"

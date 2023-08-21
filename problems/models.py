@@ -18,10 +18,7 @@ class Submission(models.Model):
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE, default=1)
     code = models.TextField(null=False, blank=False)
     date = models.DateTimeField(auto_now_add=True)
-    STATUS = [
-        ("P", "Passed"),
-        ("F", "Failed"),
-    ]
+    status = models.TextField(null=False, blank=False, default='')
 
     def __str__(self):
         return (

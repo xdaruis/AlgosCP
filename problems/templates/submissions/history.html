@@ -10,6 +10,7 @@
             <th scope="col">id</th>
             <th scope="col">Date</th>
             <th scope="col">Name</th>
+            <th scope="col">Status</th>
             <th scope="col">Author</th>
           </tr>
         </thead>
@@ -17,13 +18,12 @@
           {% for submission in submissions %}
             <tr>
               <th scope="row">{{ submission.id }}</th>
-              <th class="col-2" scope="row">{{ submission.date|date:'d/m/Y' }}</th>
+              <td class="col-2" scope="row">{{ submission.date|date:'d/m/Y' }}</td>
               <td>
                 <a class="nav-link" href="{% url 'submission' submission.id %}">{{ submission.problem.title }}</a>
               </td>
-              <td>
-                <a class="nav-link" >{{ submission.user }}</a>
-              </td>
+              <td scope="row">{{ submission.status }}</td>
+              <td>{{ submission.user }}</td>
             </tr>
           {% endfor %}
         </tbody>
