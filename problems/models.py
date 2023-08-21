@@ -24,4 +24,9 @@ class Submission(models.Model):
     ]
 
     def __str__(self):
-        return str(self.user.username) + ' ' + str(self.problem.name) + ' ' + str(self.date)
+        return (
+            f"#{self.pk} "
+            f"{self.user.username} "
+            f"{self.problem.name} "
+            f"({self.date:%d-%m-%Y %H:%M})"
+            )

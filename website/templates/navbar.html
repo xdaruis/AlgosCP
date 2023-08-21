@@ -8,7 +8,9 @@
       <div class="navbar-nav">
         <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
         <a class="nav-link active" href="{% url 'list' %}">Problems</a>
-        <a class="nav-link active" href="{% url 'history' %}">History</a>
+        {% if user.is_authenticated %}
+          <a class="nav-link active" href="{% url 'history' %}">History</a>
+        {% endif %}
       </div>
       {% if user.is_authenticated %}
         <div class="navbar-nav ms-auto">
