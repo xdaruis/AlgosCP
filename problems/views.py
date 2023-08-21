@@ -74,7 +74,6 @@ def test_submission(problem_id, code, base_path):
             subprocess.run(compare_results, shell=True, check=True)
             return "Correct Solution!"
         except subprocess.CalledProcessError as e:
-            print("Error during result comparison:", e)
             return "Wrong Answer"
     except subprocess.CalledProcessError as e:
         if e.returncode == 124:
