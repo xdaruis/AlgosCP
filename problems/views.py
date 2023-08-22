@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 from django.contrib import messages
 from .models import Problem, Submission
 from .forms import SubmissionForm
+from decorators.custom_decorators import custom_login_required
 
 # Create your views here.
 def problems_list(request):
@@ -17,35 +18,33 @@ def display_problem(request, problem_name):
     problem = Problem.objects.get(name = problem_name.replace('-', ' '))
     return render(request, 'problems/display_problem.html', {'problem': problem})
 
+@custom_login_required
 def send_solution(request, problem_id):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
-            form = SubmissionForm(request.POST)
-            if form.is_valid():
-                submission = form.save(commit = False)
-                submission.user = request.user
-                submission.problem = Problem.objects.get(pk = problem_id)
+    if request.method == 'POST':
+        form = SubmissionForm(request.POST)
+        if form.is_valid():
+            submission = form.save(commit = False)
+            submission.user = request.user
+            submission.problem = Problem.objects.get(pk = problem_id)
 
-                #Evaluator
-                code = form.cleaned_data['code']
-                base_path = os.path.join(settings.BASE_DIR, 'Evaluator')
-                submission.status = test_submission(problem_id, code, base_path)
-                remove_generated_files(base_path, problem_id)
+            #Evaluator
+            code = form.cleaned_data['code']
+            base_path = os.path.join(settings.BASE_DIR, 'Evaluator')
+            submission.status = test_submission(problem_id, code, base_path)
+            remove_generated_files(base_path, problem_id)
 
-                submission.save()
-                return redirect('submission', submission_id = submission.id)
-        messages.success(request, ('Your submission is empty!'))
-        problem_name = Problem.objects.get(pk = problem_id).name
-        return redirect('display_problem', problem_name = slugify(problem_name))
-    return render(request, 'login_required.html', {})
+            submission.save()
+            return redirect('submission', submission_id = submission.id)
+    messages.success(request, ('Your submission is empty!'))
+    problem_name = Problem.objects.get(pk = problem_id).name
+    return redirect('display_problem', problem_name = slugify(problem_name))
 
+@custom_login_required
 def history(request):
     if request.user.is_superuser:
         submissions = Submission.objects.all().order_by('-date')
-    elif request.user.is_authenticated:
-        submissions = Submission.objects.filter(user = request.user).order_by('-date')
     else:
-        return render(request, 'login_required.html', {})
+        submissions = Submission.objects.filter(user = request.user).order_by('-date')
     return render(request, 'submissions/history.html', {'submissions':submissions})
 
 def view_submission(request, submission_id):

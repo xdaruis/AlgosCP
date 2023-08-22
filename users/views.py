@@ -4,6 +4,7 @@ from django.contrib import messages
 from .forms import SignUpForm, EditProfileForm
 from .models import Profile
 from django.contrib.auth.models import User
+from decorators.custom_decorators import custom_login_required
 
 # Create your views here.
 def login_request(request):
@@ -35,23 +36,21 @@ def register_request(request):
             return redirect('index')
     return render(request, 'auth/register.html', {'form': form})
 
+@custom_login_required
 def profile(request, username):
-    if request.user.is_authenticated:
-        profile = None
-        try:
-            user = User.objects.get(username = username)
-            profile = Profile.objects.get(user_id = user)
-        except:
-            pass
-        return render(request, 'profile.html', {'profile': profile})
-    return render(request, 'login_required.html', {})
+    profile = None
+    try:
+        user = User.objects.get(username = username)
+        profile = Profile.objects.get(user_id = user)
+    except:
+        pass
+    return render(request, 'profile.html', {'profile': profile})
 
+@custom_login_required
 def edit_profile(request):
-    if request.user.is_authenticated:
-        profile = Profile.objects.get(user = request.user.id)
-        form = EditProfileForm(request.POST or None, request.FILES or None, instance = profile)
-        if request.method == 'POST' and form.is_valid():
-            form.save()
-            return redirect('profile', username = request.user)
-        return render(request, 'edit_profile.html', {'form': form})
-    return render(request, 'login_required.html', {})
+    profile = Profile.objects.get(user = request.user.id)
+    form = EditProfileForm(request.POST or None, request.FILES or None, instance = profile)
+    if request.method == 'POST' and form.is_valid():
+        form.save()
+        return redirect('profile', username = request.user)
+    return render(request, 'edit_profile.html', {'form': form})
