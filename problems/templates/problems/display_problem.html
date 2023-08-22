@@ -24,7 +24,11 @@
       {% csrf_token %}
       <center>
         <textarea id="code-editor" name="code" style="display: none;"></textarea>
-        <input type="Submit" value="Submit" class="btn btn-success">
+        <input type="Submit" value="Submit" class="btn btn-success" id="submit-btn">
+        <button class="btn btn-primary" type="button" disabled style="display: none;" id="loading-btn">
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Testing...
+        </button>
       </center>
     </form>
     <div class="container">

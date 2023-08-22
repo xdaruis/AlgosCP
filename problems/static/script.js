@@ -10,5 +10,7 @@ ace.edit(editor, {
 });
 
 document.addEventListener('submit', () => {
+    document.getElementById("submit-btn").style.display = "none";
+    document.getElementById("loading-btn").style.display = "inline-block";
     document.getElementById("code-editor").innerHTML = ace.edit('editor').getSession().getValue();
 });
