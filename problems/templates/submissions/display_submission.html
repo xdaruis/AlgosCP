@@ -4,11 +4,15 @@
 {% block content %}
   <link rel="stylesheet" href="{% static 'problems_styling.css' %}">
   <center>
+    {% if user.is_superuser %}
+      <a class="btn btn-success" href="/admin/problems/problem/{{ submission.problem.id }}/change/">Edit</a>
+      <br><br>
+    {% endif %}
     <div class="card">
       <div class="card-body">
         <pre></pre>
         <h2>Your Submission:</h2>
-        <h2>{{ submission.percentage }}</h2>
+        <h2>{{ submission.result }}</h2>
       </div>
     </div>
   </center>

@@ -35,8 +35,8 @@ def send_solution(request, problem_id):
             code = form.cleaned_data['code']
             base_path = os.path.join(settings.BASE_DIR, 'Evaluator')
             results = test_submission(problem_id, code, base_path)
-            submission.status = results[:-1]
-            submission.percentage = results[-1]
+            submission.test_cases = results[:-1]
+            submission.result = results[-1]
             remove_generated_files(base_path, problem_id)
 
             submission.save()
@@ -55,7 +55,7 @@ def history(request):
 
 def view_submission(request, submission_id):
     submission = Submission.objects.get(pk = submission_id)
-    result_list = ast.literal_eval(submission.status)
+    result_list = ast.literal_eval(submission.test_cases)
     if request.user == submission.user or request.user.is_superuser:
         return render(request, 'submissions/display_submission.html', {'submission': submission, 'result_list':result_list})
     messages.success(request, ("You're not allowed to view others submissions!"))
@@ -71,6 +71,7 @@ def test_submission(problem_id, code, base_path):
         subprocess.run(compile_program, shell=True, check=True)
         results = []
         test_cases = problem.input.strip().split('#')
+        correct_answers = problem.correct_output.strip().split('#')
         test_num = 0
         right_answers = 0
         time_limit_exceeded = False
@@ -80,12 +81,10 @@ def test_submission(problem_id, code, base_path):
                 custom_time_limit = problem.time_limit
                 execute_program = f"timeout {custom_time_limit} {base_path}/{problem_id} <<< '{input}' > {base_path}/{problem_id}.out"
                 subprocess.run(execute_program, shell=True, check=True)
-                correct_answers = problem.correct_output.strip().split('#')
-                correct_answer = correct_answers[test_num - 1]
                 program_output_file = f"{base_path}/{problem_id}.out"
                 with open(program_output_file, 'r') as output_file:
                     program_output = output_file.read().strip()
-                if program_output == correct_answer:
+                if program_output == correct_answers[test_num - 1]:
                     right_answers += 1
                     results.append(f"{test_num}.Correct Solution!")
                 else:

@@ -22,7 +22,7 @@
               <td>
                 <a class="nav-link" href="{% url 'submission' submission.id %}">{{ submission.problem.title }}</a>
               </td>
-              <td scope="row">{{ submission.percentage }}</td>
+              <td scope="row">{{ submission.result }}</td>
               <td>{{ submission.user }}</td>
             </tr>
           {% endfor %}
