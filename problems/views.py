@@ -1,6 +1,7 @@
 import os
 import subprocess
 import re
+import ast
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.template.defaultfilters import slugify
@@ -54,30 +55,32 @@ def history(request):
 
 def view_submission(request, submission_id):
     submission = Submission.objects.get(pk = submission_id)
+    result_list = ast.literal_eval(submission.status)
     if request.user == submission.user or request.user.is_superuser:
-        return render(request, 'submissions/display_submission.html', {'submission': submission})
+        return render(request, 'submissions/display_submission.html', {'submission': submission, 'result_list':result_list})
     messages.success(request, ("You're not allowed to view others submissions!"))
     return redirect('index')
 
 def test_submission(problem_id, code, base_path):
+    problem = Problem.objects.get(pk=problem_id)
     try:
-        cpp_file_path = f"{base_path}/{problem_id}.cpp"
-        with open(cpp_file_path, 'wb') as cpp_file:
+        cpp_path = f"{base_path}/{problem_id}.cpp"
+        with open(cpp_path, 'wb') as cpp_file:
             cpp_file.write(code.encode('utf-8'))
-        compile_program = f"g++ {cpp_file_path} -o {base_path}/{problem_id}"
+        compile_program = f"g++ {cpp_path} -o {base_path}/{problem_id}"
         subprocess.run(compile_program, shell=True, check=True)
         results = []
-        test_cases = Problem.objects.get(pk=problem_id).input.strip().split('#')
-        correct_answers = Problem.objects.get(pk=problem_id).correct_output.strip().split('#')
+        test_cases = problem.input.strip().split('#')
         test_num = 0
         right_answers = 0
         time_limit_exceeded = False
         for input in test_cases:
             test_num += 1
             try:
-                custom_time_limit = Problem.objects.get(pk=problem_id).time_limit
+                custom_time_limit = problem.time_limit
                 execute_program = f"timeout {custom_time_limit} {base_path}/{problem_id} <<< '{input}' > {base_path}/{problem_id}.out"
                 subprocess.run(execute_program, shell=True, check=True)
+                correct_answers = problem.correct_output.strip().split('#')
                 correct_answer = correct_answers[test_num - 1]
                 program_output_file = f"{base_path}/{problem_id}.out"
                 with open(program_output_file, 'r') as output_file:
@@ -102,14 +105,14 @@ def test_submission(problem_id, code, base_path):
             results.append("Wrong Answers!")
         return results
     except subprocess.CalledProcessError as e:
-        return ["Failed Compilation"]
+        return "Failed Compilation"
 
 def remove_generated_files(base_path, problem_id):
-    cpp_file_path = f"{base_path}/{problem_id}.cpp"
+    cpp_path = f"{base_path}/{problem_id}.cpp"
     exe_path = f"{base_path}/{problem_id}"
     out_path = f"{base_path}/{problem_id}.out"
-    if os.path.exists(cpp_file_path):
-        os.remove(cpp_file_path)
+    if os.path.exists(cpp_path):
+        os.remove(cpp_path)
     if os.path.exists(exe_path):
         os.remove(exe_path)
     if os.path.exists(out_path):
