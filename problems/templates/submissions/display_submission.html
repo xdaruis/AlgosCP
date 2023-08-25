@@ -8,6 +8,7 @@
       <div class="card-body">
         <pre></pre>
         <h2>Your Submission:</h2>
+        <h2>{{ submission.percentage }}</h2>
       </div>
     </div>
   </center>
@@ -15,8 +16,14 @@
   <div class="row g-1">
     <div class="card col-3">
       <pre></pre>
-      <h2> Verdict: </h2>
-      <h2>{{ submission.status }}</h2>
+      <h2> Tests: </h2>
+      {% if result_list %}
+        {% for result in result_list %}
+          <h6>{{result}}</h6>
+        {% endfor %}
+      {% else %}
+        <h6>Failed Compilation!</h6>
+      {% endif %}
     </div>
     <div class="col-1"></div>
     <div class="card col-8">

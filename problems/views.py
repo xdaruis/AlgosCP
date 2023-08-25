@@ -9,6 +9,9 @@ from .models import Problem, Submission
 from .forms import SubmissionForm
 from decorators.custom_decorators import custom_login_required
 
+RETURN_CODE_TIMEOUT = 124
+HUNDRED = 100
+
 # Create your views here.
 def problems_list(request):
     problems = Problem.objects.all().order_by('pk')
@@ -30,7 +33,9 @@ def send_solution(request, problem_id):
             #Evaluator
             code = form.cleaned_data['code']
             base_path = os.path.join(settings.BASE_DIR, 'Evaluator')
-            submission.status = test_submission(problem_id, code, base_path)
+            results = test_submission(problem_id, code, base_path)
+            submission.status = results[:-1]
+            submission.percentage = results[-1]
             remove_generated_files(base_path, problem_id)
 
             submission.save()
@@ -56,42 +61,48 @@ def view_submission(request, submission_id):
 
 def test_submission(problem_id, code, base_path):
     try:
-        # Need to get inputs and outputs from the database in the future
-        # problem = Problem.objects.get(pk=problem_id)
-        # inputs = problem.input
-        # correct_outputs = problem.correct_output
         cpp_file_path = f"{base_path}/{problem_id}.cpp"
         with open(cpp_file_path, 'wb') as cpp_file:
             cpp_file.write(code.encode('utf-8'))
-        add_testcases_loop(problem_id, base_path)
         compile_program = f"g++ {cpp_file_path} -o {base_path}/{problem_id}"
         subprocess.run(compile_program, shell=True, check=True)
-        execute_program = f"timeout 5 {base_path}/{problem_id} > {base_path}/{problem_id}.out"
-        subprocess.run(execute_program, shell=True, check=True)
-        compare_results = f"diff {base_path}/DesiredOutputs/{problem_id}.out {base_path}/{problem_id}.out > {base_path}/errors.txt"
-        try:
-            subprocess.run(compare_results, shell=True, check=True)
-            return "Correct Solution!"
-        except subprocess.CalledProcessError as e:
-            return "Wrong Answer"
-    except subprocess.CalledProcessError as e:
-        if e.returncode == 124:
-            return "Time Limit Exceeded"
+        results = []
+        test_cases = Problem.objects.get(pk=problem_id).input.strip().split('#')
+        correct_answers = Problem.objects.get(pk=problem_id).correct_output.strip().split('#')
+        test_num = 0
+        right_answers = 0
+        time_limit_exceeded = False
+        for input in test_cases:
+            test_num += 1
+            try:
+                custom_time_limit = Problem.objects.get(pk=problem_id).time_limit
+                execute_program = f"timeout {custom_time_limit} {base_path}/{problem_id} <<< '{input}' > {base_path}/{problem_id}.out"
+                subprocess.run(execute_program, shell=True, check=True)
+                correct_answer = correct_answers[test_num - 1]
+                program_output_file = f"{base_path}/{problem_id}.out"
+                with open(program_output_file, 'r') as output_file:
+                    program_output = output_file.read().strip()
+                if program_output == correct_answer:
+                    right_answers += 1
+                    results.append(f"{test_num}.Correct Solution!")
+                else:
+                    results.append(f"{test_num}.Wrong Answer")
+            except subprocess.CalledProcessError as e:
+                if e.returncode == RETURN_CODE_TIMEOUT:
+                    time_limit_exceeded = True
+                    results.append(f"{test_num}.Time Limit Exceeded")
+                else:
+                    results.append("Failed Compilation")
+        percentage = round(right_answers / test_num) * HUNDRED
+        if percentage == HUNDRED:
+            results.append("Correct Solution!")
+        elif time_limit_exceeded:
+            results.append("Time Limit Exceeded!")
         else:
-            return "Failed Compilation"
-
-def add_testcases_loop(problem_id, base_path):
-    cpp_file_path = f"{base_path}/{problem_id}.cpp"
-    with open(cpp_file_path, 'r', encoding='utf-8') as cpp_file:
-        cpp_content = cpp_file.read()
-    start_testing = f'freopen("{base_path}/Inputs/{problem_id}.in", "r", stdin); int __tests; cin >> __tests; while(__tests--) {{'
-    end_testing = ' cout << " "; }'
-    with open(cpp_file_path, 'r') as cpp_file:
-        cpp_content = cpp_file.read()
-    modified_content = re.sub(r'(int\s+main\s*\(\s*\)\s*{)', rf'\1\n    {start_testing}\n', cpp_content, count=1)
-    modified_content = re.sub(r'(\s*return\s+0\s*;)', rf'    {end_testing}\n\1', modified_content)
-    with open(cpp_file_path, 'w') as cpp_file:
-        cpp_file.write(modified_content)
+            results.append("Wrong Answers!")
+        return results
+    except subprocess.CalledProcessError as e:
+        return ["Failed Compilation"]
 
 def remove_generated_files(base_path, problem_id):
     cpp_file_path = f"{base_path}/{problem_id}.cpp"

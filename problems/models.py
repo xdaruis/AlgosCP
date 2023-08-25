@@ -3,12 +3,22 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Problem(models.Model):
+    TIME_LIMIT_CHOICES = (
+        (1, '1 second'),
+        (2, '2 seconds'),
+        (3, '3 seconds'),
+        (5, '5 seconds'),
+        (10, '10 seconds'),
+        (15, '15 seconds'),
+    )
+
     name = models.CharField(max_length=50, unique=True, null=False, blank=False, default='lowercase letters only')
     title = models.CharField(max_length=50, null=False, blank=False, default='')
     description = models.TextField()
     template = models.TextField(blank=False, default='')
     input = models.TextField(default='')
     correct_output = models.TextField(default='')
+    time_limit = models.IntegerField(choices=TIME_LIMIT_CHOICES, default=5)
 
     def __str__(self):
         return self.name
@@ -19,6 +29,7 @@ class Submission(models.Model):
     code = models.TextField(null=False, blank=False)
     date = models.DateTimeField(auto_now_add=True)
     status = models.TextField(null=False, blank=False, default='')
+    percentage = models.CharField(max_length=25, default='0')
 
     def __str__(self):
         return (
