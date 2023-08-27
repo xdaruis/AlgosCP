@@ -1,6 +1,5 @@
 import os
 import subprocess
-import re
 import ast
 from django.conf import settings
 from django.shortcuts import render, redirect
@@ -11,7 +10,6 @@ from .forms import SubmissionForm
 from decorators.custom_decorators import custom_login_required
 
 RETURN_CODE_TIMEOUT = 124
-HUNDRED = 100
 
 # Create your views here.
 def problems_list(request):
@@ -95,8 +93,7 @@ def test_submission(problem_id, code, base_path):
                     results.append(f"{test_num}.Time Limit Exceeded")
                 else:
                     results.append("Failed Compilation")
-        percentage = round(right_answers / test_num) * HUNDRED
-        if percentage == HUNDRED:
+        if right_answers == test_num:
             results.append("Correct Solution!")
         elif time_limit_exceeded:
             results.append("Time Limit Exceeded!")
