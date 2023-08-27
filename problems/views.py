@@ -77,7 +77,10 @@ def test_submission(problem_id, code, base_path):
             test_num += 1
             try:
                 custom_time_limit = problem.time_limit
-                execute_program = f"timeout {custom_time_limit} {base_path}/{problem_id} <<< '{input}' > {base_path}/{problem_id}.out"
+                input_path = f"{base_path}/{problem_id}.cpp"
+                with open(input_path, 'w') as input_file:
+                    input_file.write(input)
+                execute_program = f"timeout {custom_time_limit} {base_path}/{problem_id} < {input_path} > {base_path}/{problem_id}.out"
                 subprocess.run(execute_program, shell=True, check=True)
                 program_output_file = f"{base_path}/{problem_id}.out"
                 with open(program_output_file, 'r') as output_file:
@@ -86,6 +89,9 @@ def test_submission(problem_id, code, base_path):
                     right_answers += 1
                     results.append(f"{test_num}.Correct Solution!")
                 else:
+                    print(f"test#{test_num}")
+                    print(f"correct: {correct_answers[test_num - 1]}")
+                    print(f"actOutput: {program_output}")
                     results.append(f"{test_num}.Wrong Answer")
             except subprocess.CalledProcessError as e:
                 if e.returncode == RETURN_CODE_TIMEOUT:
@@ -104,11 +110,11 @@ def test_submission(problem_id, code, base_path):
         return "Failed Compilation"
 
 def remove_generated_files(base_path, problem_id):
-    cpp_path = f"{base_path}/{problem_id}.cpp"
+    input_path = f"{base_path}/{problem_id}.cpp"
     exe_path = f"{base_path}/{problem_id}"
     out_path = f"{base_path}/{problem_id}.out"
-    if os.path.exists(cpp_path):
-        os.remove(cpp_path)
+    if os.path.exists(input_path):
+        os.remove(input_path)
     if os.path.exists(exe_path):
         os.remove(exe_path)
     if os.path.exists(out_path):
