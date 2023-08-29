@@ -4,7 +4,7 @@
 
 ## Features
 
-- **Auto algorithm grading:** After submission, a Python script incorporates a loop into the submission to run database test cases. It then checks the code for errors, compiles it, and applies time limits, all using Linux commands. Lastly, it compares the outputs to the expected results.
+- **Auto algorithm grading:** Upon submission, the database stores who sent it, what problem it's for, and the code itself. Then, it talks to the Evaluator API, sharing details like the problem ID, the code, how many tests to run, and how long it should take. This API tests the code using Linux commands and gives back a report with the results, which are then saved in the database.
 - **Detailed problem pages:** Featuring an intuitive interface with problem lists, detailed problem descriptions, and an interactive code editor.
 - **Secure user functions:** Implemented a secure user authentication for login and registration, allowing each user to have a profile with a picture and a description.
 
