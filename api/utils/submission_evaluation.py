@@ -13,9 +13,7 @@ def test_submission_script(problem_id, code, base_path, number_of_testcases, tim
         results = []
         right_answers = 0
         time_limit_exceeded = False
-        act_test = 0
-        while act_test < number_of_testcases:
-            act_test += 1
+        for act_test in (1, number_of_testcases + 1):
             tests_path = f"{base_path}/{problem_id}/{act_test}"
             try:
                 execute_program = f"timeout {time_limit} {base_path}/{problem_id}.exe < {tests_path}.in > {base_path}/{problem_id}.out"
@@ -36,7 +34,7 @@ def test_submission_script(problem_id, code, base_path, number_of_testcases, tim
                 else:
                     results.append("Failed Compilation")
         remove_generated_files(base_path, problem_id)
-        if right_answers == act_test:
+        if right_answers == number_of_testcases:
             results.append("Correct Solution!")
         elif time_limit_exceeded:
             results.append("Time Limit Exceeded!")
