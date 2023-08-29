@@ -16,8 +16,7 @@ class Problem(models.Model):
     title = models.CharField(max_length=50, null=False, blank=False, default='')
     description = models.TextField()
     template = models.TextField(blank=False, default='')
-    input = models.TextField(default='')
-    correct_output = models.TextField(default='')
+    number_of_testcases = models.IntegerField(default=1)
     time_limit = models.IntegerField(choices=TIME_LIMIT_CHOICES, default=5)
 
     def __str__(self):

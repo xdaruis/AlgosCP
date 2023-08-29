@@ -1,6 +1,6 @@
 import os
-import subprocess
 import ast
+import requests
 from django.conf import settings
 from django.shortcuts import render, redirect
 from django.template.defaultfilters import slugify
@@ -9,7 +9,7 @@ from .models import Problem, Submission
 from .forms import SubmissionForm
 from decorators.custom_decorators import custom_login_required
 
-RETURN_CODE_TIMEOUT = 124
+OK_STATUS_CODE = 200
 
 # Create your views here.
 def problems_list(request):
@@ -24,23 +24,35 @@ def display_problem(request, problem_name):
 def send_solution(request, problem_id):
     if request.method == 'POST':
         form = SubmissionForm(request.POST)
+        problem = Problem.objects.get(pk = problem_id)
         if form.is_valid():
             submission = form.save(commit = False)
             submission.user = request.user
-            submission.problem = Problem.objects.get(pk = problem_id)
+            submission.problem = problem
 
-            #Evaluator
-            code = form.cleaned_data['code']
-            base_path = os.path.join(settings.BASE_DIR, 'Evaluator')
-            results = test_submission(problem_id, code, base_path)
-            submission.test_cases = results[:-1]
-            submission.result = results[-1]
-            remove_generated_files(base_path, problem_id)
+            # Calling Evaluator API
+            api_url = 'http://localhost:8000/api/test-submission/'
+            base_path = os.path.join(settings.BASE_DIR, 'problems-test-cases')
+            data = {
+                'problem_id': problem_id,
+                'code': form.cleaned_data['code'],
+                'base_path': base_path,
+                'number_of_testcases': problem.number_of_testcases,
+                'time_limit': problem.time_limit,
+            }
+            response = requests.post(api_url, data = data)
+            if response.status_code == OK_STATUS_CODE:
+                results = response.json().get('results', [])
+                submission.test_cases = results[:-1]
+                submission.result = results[-1]
+                submission.save()
+            else:
+                pass
 
             submission.save()
             return redirect('submission', submission_id = submission.id)
     messages.success(request, ('Your submission is empty!'))
-    problem_name = Problem.objects.get(pk = problem_id).name
+    problem_name = problem.name
     return redirect('display_problem', problem_name = slugify(problem_name))
 
 @custom_login_required
@@ -58,64 +70,3 @@ def view_submission(request, submission_id):
         return render(request, 'submissions/display_submission.html', {'submission': submission, 'result_list':result_list})
     messages.success(request, ("You're not allowed to view others submissions!"))
     return redirect('index')
-
-def test_submission(problem_id, code, base_path):
-    problem = Problem.objects.get(pk=problem_id)
-    try:
-        cpp_path = f"{base_path}/{problem_id}.cpp"
-        with open(cpp_path, 'wb') as cpp_file:
-            cpp_file.write(code.encode('utf-8'))
-        compile_program = f"g++ {cpp_path} -o {base_path}/{problem_id}"
-        subprocess.run(compile_program, shell=True, check=True)
-        results = []
-        test_cases = problem.input.strip().split('#')
-        correct_answers = problem.correct_output.strip().split('#')
-        test_num = 0
-        right_answers = 0
-        time_limit_exceeded = False
-        for input in test_cases:
-            test_num += 1
-            try:
-                custom_time_limit = problem.time_limit
-                input_path = f"{base_path}/{problem_id}.cpp"
-                with open(input_path, 'w') as input_file:
-                    input_file.write(input)
-                execute_program = f"timeout {custom_time_limit} {base_path}/{problem_id} < {input_path} > {base_path}/{problem_id}.out"
-                subprocess.run(execute_program, shell=True, check=True)
-                program_output_file = f"{base_path}/{problem_id}.out"
-                with open(program_output_file, 'r') as output_file:
-                    program_output = output_file.read().strip()
-                if program_output == correct_answers[test_num - 1]:
-                    right_answers += 1
-                    results.append(f"{test_num}.Correct Solution!")
-                else:
-                    print(f"test#{test_num}")
-                    print(f"correct: {correct_answers[test_num - 1]}")
-                    print(f"actOutput: {program_output}")
-                    results.append(f"{test_num}.Wrong Answer")
-            except subprocess.CalledProcessError as e:
-                if e.returncode == RETURN_CODE_TIMEOUT:
-                    time_limit_exceeded = True
-                    results.append(f"{test_num}.Time Limit Exceeded")
-                else:
-                    results.append("Failed Compilation")
-        if right_answers == test_num:
-            results.append("Correct Solution!")
-        elif time_limit_exceeded:
-            results.append("Time Limit Exceeded!")
-        else:
-            results.append("Wrong Answers!")
-        return results
-    except subprocess.CalledProcessError as e:
-        return "Failed Compilation"
-
-def remove_generated_files(base_path, problem_id):
-    input_path = f"{base_path}/{problem_id}.cpp"
-    exe_path = f"{base_path}/{problem_id}"
-    out_path = f"{base_path}/{problem_id}.out"
-    if os.path.exists(input_path):
-        os.remove(input_path)
-    if os.path.exists(exe_path):
-        os.remove(exe_path)
-    if os.path.exists(out_path):
-        os.remove(out_path)
