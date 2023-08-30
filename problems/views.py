@@ -36,14 +36,13 @@ def send_solution(request, problem_id):
             number_of_testcases = problem.number_of_testcases
             inputs = []
             for i in range(1, number_of_testcases + 1):
-                with open(f"{base_path}/{i}.in", 'r') as input_file:
+                with open(f"{base_path}/{problem_id}/{i}.in", 'r') as input_file:
                     inputs.append(input_file.read())
             correct_outputs = []
             for i in range(1, number_of_testcases + 1):
-                with open(f"{base_path}/{i}.out", 'r') as output_file:
+                with open(f"{base_path}/{problem_id}/{i}.out", 'r') as output_file:
                     correct_outputs.append(output_file.read())
             data = {
-                'problem_id': problem_id,
                 'code': form.cleaned_data['code'],
                 'base_path': base_path,
                 'number_of_testcases': number_of_testcases,
