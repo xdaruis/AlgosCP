@@ -12,7 +12,6 @@ def test_submission(request):
         number_of_testcases = serializer.validated_data['number_of_testcases']
         time_limit = serializer.validated_data['time_limit']
         inputs = serializer.validated_data['inputs']
-        correct_outputs = serializer.validated_data['correct_outputs']
-        results = test_submission_script(inputs, correct_outputs, code, number_of_testcases, time_limit)
+        results = test_submission_script(inputs, code, number_of_testcases, time_limit)
         return Response({'results': results}, status = status.HTTP_200_OK)
     return Response(serializer.errors, status = status.HTTP_400_BAD_REQUEST)

@@ -38,25 +38,37 @@ def send_solution(request, problem_id):
             for i in range(1, number_of_testcases + 1):
                 with open(f"{base_path}/{problem_id}/{i}.in", 'r') as input_file:
                     inputs.append(input_file.read())
-            correct_outputs = []
-            for i in range(1, number_of_testcases + 1):
-                with open(f"{base_path}/{problem_id}/{i}.out", 'r') as output_file:
-                    correct_outputs.append(output_file.read())
             data = {
                 'code': form.cleaned_data['code'],
                 'number_of_testcases': number_of_testcases,
                 'time_limit': problem.time_limit,
                 'inputs': inputs,
-                'correct_outputs': correct_outputs,
             }
-            response = requests.post(api_url, data = data)
+            response = requests.post(api_url, data=data)
             if response.status_code == OK_STATUS_CODE:
                 results = response.json().get('results', [])
-                submission.test_cases = results[:-1]
-                submission.result = results[-1]
-                submission.save()
-            else:
-                pass
+                slow_solution = False
+                if results[0] == 'Failed Compilation!':
+                    submission.test_cases = results[0]
+                    submission.result = results[0]
+                else:
+                    correct_outputs = []
+                    for i in range(1, number_of_testcases + 1):
+                        with open(f"{base_path}/{problem_id}/{i}.out", 'r') as output_file:
+                            correct_outputs.append(output_file.read())
+                    for act_test, act_result in enumerate(results):
+                        if act_result == correct_outputs[act_test]:
+                            results[act_test] = f"{act_test + 1}.Correct Answer!"
+                        elif act_result == f"{act_test + 1}.Time Limit Exceeded":
+                            slow_solution = True
+                        else:
+                            results[act_test] = f"{act_test + 1}.Wrong Answer"
+                            submission.result = "Partial Test Coverage!"
+                    submission.test_cases = results
+                    if slow_solution:
+                        submission.result = "Suboptimal Solution"
+                    else:
+                        submission.result = "Correct Solution!"
 
             submission.save()
             return redirect('submission', submission_id = submission.id)

@@ -5,4 +5,3 @@ class CodeSubmissionSerializer(serializers.Serializer):
     number_of_testcases = serializers.IntegerField()
     time_limit = serializers.IntegerField()
     inputs = serializers.ListField(child=serializers.CharField())
-    correct_outputs = serializers.ListField(child=serializers.CharField())
