@@ -10,7 +10,13 @@ ace.edit(editor, {
 });
 
 document.addEventListener('submit', () => {
+    document.getElementById("code-editor").innerHTML = ace.edit('editor').getSession().getValue();
     document.getElementById("submit-btn").style.display = "none";
     document.getElementById("loading-btn").style.display = "inline-block";
-    document.getElementById("code-editor").innerHTML = ace.edit('editor').getSession().getValue();
+    window.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+            document.getElementById("submit-btn").style.display = "inline-block";
+            document.getElementById("loading-btn").style.display = "none";
+        }
+    });
 });
