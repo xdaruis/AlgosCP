@@ -27,7 +27,7 @@ class Submission(models.Model):
     problem = models.ForeignKey(Problem, on_delete=models.CASCADE, default=1)
     code = models.TextField(null=False, blank=False)
     date = models.DateTimeField(auto_now_add=True)
-    test_cases = models.TextField(null=False, blank=False, default='')
+    test_cases_results = models.TextField(null=False, blank=False, default='')
     result = models.CharField(max_length=25, default='0')
 
     def __str__(self):

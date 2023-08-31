@@ -48,7 +48,7 @@ def send_solution(request, problem_id):
             if response.status_code == OK_STATUS_CODE:
                 results = response.json().get('results', [])
                 if results[0] == 'Failed Compilation!':
-                    submission.test_cases = ['Please check your code before submitting it!']
+                    submission.test_cases_results = ['Please check your code before submitting it!']
                     submission.result = 'Compilation Error!'
                 else:
                     slow_solution = False
@@ -65,7 +65,7 @@ def send_solution(request, problem_id):
                         else:
                             results[act_test] = f"{act_test + 1}.Wrong Answer"
                             has_wrong_answer = True
-                    submission.test_cases = results
+                    submission.test_cases_results = results
                     if slow_solution:
                         submission.result = "Suboptimal Solution"
                     elif has_wrong_answer:
@@ -89,7 +89,7 @@ def history(request):
 
 def view_submission(request, submission_id):
     submission = Submission.objects.get(pk = submission_id)
-    result_list = ast.literal_eval(submission.test_cases)
+    result_list = ast.literal_eval(submission.test_cases_results)
     if request.user == submission.user or request.user.is_superuser:
         return render(request, 'submissions/display_submission.html', {'submission': submission, 'result_list':result_list})
     messages.success(request, ("You're not allowed to view others submissions!"))
