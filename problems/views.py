@@ -31,7 +31,7 @@ def send_solution(request, problem_id):
             submission.problem = problem
 
             # Calling Evaluator API
-            api_url = 'http://localhost:8000/api/test-submission/'
+            api_url = settings.EVALUATOR_API_URL
             base_path = os.path.join(settings.BASE_DIR, 'problems-test-cases')
             number_of_testcases = problem.number_of_testcases
             inputs = []
