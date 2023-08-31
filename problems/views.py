@@ -47,12 +47,12 @@ def send_solution(request, problem_id):
             response = requests.post(api_url, data=data)
             if response.status_code == OK_STATUS_CODE:
                 results = response.json().get('results', [])
-                slow_solution = False
-                has_wrong_answer = False
                 if results[0] == 'Failed Compilation!':
                     submission.test_cases = ['Please check your code before submitting it!']
                     submission.result = 'Compilation Error!'
                 else:
+                    slow_solution = False
+                    has_wrong_answer = False
                     correct_outputs = []
                     for i in range(1, number_of_testcases + 1):
                         with open(f"{base_path}/{problem_id}/{i}.out", 'r') as output_file:
