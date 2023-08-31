@@ -5,8 +5,9 @@ import string
 
 RETURN_CODE_TIMEOUT = 124
 
-def test_submission_script(inputs, correct_outputs, code, base_path, number_of_testcases, time_limit):
+def test_submission_script(inputs, correct_outputs, code, number_of_testcases, time_limit):
     try:
+        base_path = "/home/daruis/test-environment/"
         characters = string.ascii_letters + string.digits
         random_name = ''.join(random.choices(characters, k=5))
         file_path = f"{base_path}/{random_name}.cpp"
@@ -25,6 +26,7 @@ def test_submission_script(inputs, correct_outputs, code, base_path, number_of_t
                 subprocess.run(execute_program, shell=True, check=True)
                 with open(f"{base_path}/{random_name}.out", 'r') as output_file:
                     program_output = output_file.read().strip()
+                    results.append(program_output)
                 if program_output == correct_outputs[act_test]:
                     right_answers += 1
                     results.append(f"{act_test + 1}.Correct Solution!")
@@ -36,7 +38,7 @@ def test_submission_script(inputs, correct_outputs, code, base_path, number_of_t
                     results.append(f"{act_test + 1}.Time Limit Exceeded")
                 else:
                     results.append("Failed Compilation")
-        remove_generated_files(base_path, random_name)
+        # remove_generated_files(base_path, random_name)
         if right_answers == number_of_testcases:
             results.append("Correct Solution!")
         elif time_limit_exceeded:

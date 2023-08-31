@@ -44,7 +44,6 @@ def send_solution(request, problem_id):
                     correct_outputs.append(output_file.read())
             data = {
                 'code': form.cleaned_data['code'],
-                'base_path': base_path,
                 'number_of_testcases': number_of_testcases,
                 'time_limit': problem.time_limit,
                 'inputs': inputs,
