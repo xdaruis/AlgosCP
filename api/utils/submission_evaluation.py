@@ -1,21 +1,22 @@
 import subprocess
 import os
-import random
-import string
+import tempfile
+import secrets
+import shutil
+import stat
 
 RETURN_CODE_TIMEOUT = 124
 
 def test_submission_script(inputs, code, number_of_testcases, time_limit):
+    base_path = create_temporary_directory()
+    random_name = secrets.token_hex(16)
+    file_path = f"{base_path}/{random_name}.cpp"
+    with open(file_path, 'wb') as cpp_file:
+        cpp_file.write(code.encode('utf-8'))
     try:
-        base_path = "/home/daruis/test-environment/"
-        characters = string.ascii_letters + string.digits
-        random_name = ''.join(random.choices(characters, k=5))
-        file_path = f"{base_path}/{random_name}.cpp"
-        with open(file_path, 'wb') as cpp_file:
-            cpp_file.write(code.encode('utf-8'))
+        results = []
         compile_program = f"g++ {file_path} -o {base_path}/{random_name}.exe"
         subprocess.run(compile_program, shell=True, check=True)
-        results = []
         for act_test in range(number_of_testcases):
             with open(file_path, 'w') as input_file:
                 input_file.write(inputs[act_test])
@@ -30,16 +31,23 @@ def test_submission_script(inputs, code, number_of_testcases, time_limit):
                     results.append(f"{act_test + 1}.Time Limit Exceeded")
                 else:
                     results.append("Internal Server Error!")
-        remove_generated_files(base_path, random_name)
-        return results
     except subprocess.CalledProcessError as e:
-        os.remove(f"{base_path}/{random_name}.cpp")
-        return ["Failed Compilation!"]
+        results = ['Failed Compilation!']
+    remove_directory(base_path)
+    return results
 
-def remove_generated_files(base_path, random_name):
+def create_temporary_directory():
     try:
-        os.remove(f"{base_path}/{random_name}.cpp")
-        os.remove(f"{base_path}/{random_name}.exe")
-        os.remove(f"{base_path}/{random_name}.out")
+        random_hex_name = secrets.token_hex(16)
+        temp_directory_path = os.path.join(tempfile.gettempdir(), random_hex_name)
+        os.makedirs(temp_directory_path)
+        os.chmod(temp_directory_path, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+        return temp_directory_path
+    except:
+        return None
+
+def remove_directory(path):
+    try:
+        shutil.rmtree(path)
     except:
         pass

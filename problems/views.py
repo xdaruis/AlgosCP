@@ -48,9 +48,10 @@ def send_solution(request, problem_id):
             if response.status_code == OK_STATUS_CODE:
                 results = response.json().get('results', [])
                 slow_solution = False
+                has_wrong_answer = False
                 if results[0] == 'Failed Compilation!':
-                    submission.test_cases = results[0]
-                    submission.result = results[0]
+                    submission.test_cases = ['Please check your code before submitting it!']
+                    submission.result = 'Compilation Error!'
                 else:
                     correct_outputs = []
                     for i in range(1, number_of_testcases + 1):
@@ -63,10 +64,12 @@ def send_solution(request, problem_id):
                             slow_solution = True
                         else:
                             results[act_test] = f"{act_test + 1}.Wrong Answer"
-                            submission.result = "Partial Test Coverage!"
+                            has_wrong_answer = True
                     submission.test_cases = results
                     if slow_solution:
                         submission.result = "Suboptimal Solution"
+                    elif has_wrong_answer:
+                        submission.result = "Partial Test Coverage!"
                     else:
                         submission.result = "Correct Solution!"
 
