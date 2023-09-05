@@ -46,8 +46,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'problems.apps.ProblemsConfig',
     'django_summernote',
-    'rest_framework',
-    'api.apps.ApiConfig',
 ]
 
 MIDDLEWARE = [
