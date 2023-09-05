@@ -10,7 +10,6 @@ urlpatterns = [
     path('', include('users.urls')),
     path('', include('problems.urls')),
     path('summernote/', include('django_summernote.urls')),
-    path('', include('api.urls')),
 ]
 
 if settings.DEBUG:
