@@ -4,12 +4,13 @@
 
 ## Features
 
-- **Auto algorithm grading:** Upon submission, the database stores who sent it, what problem it's for, and the code itself. Then, it talks to the Evaluator API, sharing details like the problem ID, the code, how many tests to run, and how long it should take. This API tests the code using Linux commands and gives back a report with the results, which are then saved in the database.
+- **Auto algorithm grading:** Upon submission, an API is called with the code and tests information. This API then executes the code using **Linux** commands with the provided input list. Afterwards, it sends the results for comparison with the correct outputs and stores them in the database.
 - **Detailed problem pages:** Featuring an intuitive interface with problem lists, detailed problem descriptions, and an interactive code editor.
 - **Secure user functions:** Implemented a secure user authentication for login and registration, allowing each user to have a profile with a picture and a description.
 
 ## Technologies
 - Django
+- Django Rest Framework
 - Python
 - JavaScript
 - Bootstrap
