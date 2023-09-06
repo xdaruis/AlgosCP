@@ -24,6 +24,7 @@
       {% csrf_token %}
       <center>
         <textarea id="code-editor" name="code" style="display: none;"></textarea>
+        <textarea id="get-language" name="language" style="display: none;">cpp</textarea>
         <input type="Submit" value="Submit" class="btn btn-success" id="submit-btn">
         <button class="btn btn-primary" type="button" disabled style="display: none;" id="loading-btn">
           <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -32,6 +33,13 @@
       </center>
     </form>
     <div class="container">
+      <div class="form-group col-1">
+        <select class="form-control" id="languageSelect">
+          <option value="c_cpp">C++</option>
+          <option value="python">Python</option>
+          <option value="java">Java</option>
+        </select>
+      </div>
       <div id="editor">{{ problem.template }}</div>
       <br>
     </div>

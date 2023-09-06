@@ -39,6 +39,7 @@ def send_solution(request, problem_id):
                 with open(f"{base_path}/{problem_id}/{i}.in", 'r') as input_file:
                     inputs.append(input_file.read())
             data = {
+                'language': request.POST['language'],
                 'code': form.cleaned_data['code'],
                 'number_of_testcases': number_of_testcases,
                 'time_limit': problem.time_limit,
