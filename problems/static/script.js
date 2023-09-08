@@ -9,10 +9,6 @@ ace.edit(editor, {
     wrapWithQuotes: true,
 });
 
-let onloadLanguage = languageSelect.value;
-let onloadMode = "ace/mode/" + onloadLanguage;
-ace.edit('editor').getSession().setMode(onloadMode);
-
 const languages = {
     "c_cpp": "cpp",
     "java": "java",
@@ -37,3 +33,7 @@ languageSelect.addEventListener("change", function () {
     let mode = "ace/mode/" + selectedLanguage;
     ace.edit('editor').getSession().setMode(mode);
 });
+
+let onloadLanguage = languageSelect.value;
+let onloadMode = "ace/mode/" + onloadLanguage;
+ace.edit('editor').getSession().setMode(onloadMode);
