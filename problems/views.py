@@ -48,9 +48,12 @@ def send_solution(request, problem_id):
             response = requests.post(api_url, data=data)
             if response.status_code == OK_STATUS_CODE:
                 results = response.json().get('results', [])
-                if results[0] == 'Failed Compilation!':
+                if 'Failed Compilation!' in results:
                     submission.test_cases_results = ['Please check your code before submitting it!']
-                    submission.result = 'Compilation Error!'
+                    submission.result = "Compilation Error!"
+                elif 'Runtime Error' in results:
+                    submission.test_cases_results = ["Make sure you're not accessing invalid indexes or using too much memory!"]
+                    submission.result = "Runtime Error!"
                 else:
                     slow_solution = False
                     has_wrong_answer = False
