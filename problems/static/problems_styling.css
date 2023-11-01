@@ -1,18 +1,18 @@
-#editor { 
-    position: relative;
-    /* width: 100%; */
-    height: 400px;
-    font-size: 17px;
-    border-style: groove;
-    border-width: thin;
-    border-color: rgb(236, 236, 236);
+#editor {
+  position: relative;
+  /* width: 100%; */
+  height: 400px;
+  font-size: 17px;
+  border-style: groove;
+  border-width: thin;
+  border-color: rgb(236, 236, 236);
 }
 
 pre[class=""] {
-    background-color: rgb(236, 236, 236);
-    font-size: 15px;
-    word-wrap: break-word;
-    box-decoration-break: clone;
-    padding: .1rem .3rem .2rem;
-    border-radius: .2rem;
+  background-color: rgb(236, 236, 236);
+  font-size: 15px;
+  word-wrap: break-word;
+  box-decoration-break: clone;
+  padding: 0.1rem 0.3rem 0.2rem;
+  border-radius: 0.2rem;
 }

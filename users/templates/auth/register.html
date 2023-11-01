@@ -1,18 +1,15 @@
-{% extends 'base.html' %}
-
-{% block content %}
-  <center>
-    {% if user.is_authenticated%}
-      <h1>You're already logged in!</h1>
-      <h1><a href="{% url 'logout' %}" > Logout </a> to register</h1>
-    {% else %}
-      <div class="container-sm">
-        <form action="{% url 'register' %}" method="POST">
-          {% csrf_token %}
-          {{ form.as_p }}
-          <input type="submit" value="Register" class="btn btn-primary"/>
-        </form>
-      </div>
-    {% endif %}
-  </center>
+{% extends 'base.html' %} {% block content %}
+<center>
+  {% if user.is_authenticated%}
+  <h1>You're already logged in!</h1>
+  <h1><a href="{% url 'logout' %}"> Logout </a> to register</h1>
+  {% else %}
+  <div class="container-sm">
+    <form action="{% url 'register' %}" method="POST">
+      {% csrf_token %} {{ form.as_p }}
+      <input type="submit" value="Register" class="btn btn-primary" />
+    </form>
+  </div>
+  {% endif %}
+</center>
 {% endblock %}

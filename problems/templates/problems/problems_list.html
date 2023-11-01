@@ -1,28 +1,30 @@
-{% extends 'base.html' %}
-
-{% block content %}
-  <center>
-    {% if user.is_superuser %}
-      <a class="btn btn-primary" href="/admin/problems/problem/add/">Add</a>
-      <a class="btn btn-success" href="/admin/problems/problem/">Edit</a>
-      <br><br>
-    {% endif %}
-    <table class="table table-hover table-bordered border-secondary table-sm caption-top">
-      <caption>List of problems</caption>
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for problem in problems %}
-        <tr>
-          <td>
-              <a class="nav-link" href="{% url 'display_problem' problem.name|slugify %}">{{ problem.title }}</a>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </center>
+{% extends 'base.html' %} {% block content %}
+<center>
+  {% if user.is_superuser %}
+  <a class="btn btn-primary" href="/admin/problems/problem/add/">Add</a>
+  <a class="btn btn-success" href="/admin/problems/problem/">Edit</a>
+  <br /><br />
+  {% endif %}
+  <table class="table table-hover table-bordered border-secondary table-sm caption-top">
+    <caption>
+      List of problems
+    </caption>
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for problem in problems %}
+      <tr>
+        <td>
+          <a class="nav-link" href="{% url 'display_problem' problem.name|slugify %}"
+            >{{ problem.title }}</a
+          >
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</center>
 {% endblock %}

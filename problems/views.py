@@ -9,9 +9,9 @@ from .models import Problem, Submission
 from .forms import SubmissionForm
 from decorators.custom_decorators import custom_login_required
 
+
 OK_STATUS_CODE = 200
 
-# Create your views here.
 def problems_list(request):
     problems = Problem.objects.all().order_by('pk')
     return render(request, 'problems/problems_list.html', {'problems': problems})
