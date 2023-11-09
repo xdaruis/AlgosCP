@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'problems.apps.ProblemsConfig',
     'django_summernote',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -77,6 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'packages.wsgi.application'
+ASGI_APPLICATION = 'packages.routing.application'
 
 
 # Database

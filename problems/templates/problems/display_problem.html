@@ -2,7 +2,9 @@
 <link rel="stylesheet" href="{% static 'problems_styling.css' %}" />
 <center>
   {% if user.is_superuser %}
-  <a class="btn btn-success" href="/admin/problems/problem/{{ problem.id }}/change/"
+  <a
+    class="btn btn-success"
+    href="/admin/problems/problem/{{ problem.id }}/change/"
     >Edit</a
   >
   <br /><br />
@@ -40,18 +42,27 @@
     {% csrf_token %}
     <center>
       <textarea id="code-editor" name="code" style="display: none"></textarea>
-      <textarea id="get-language" name="language" style="display: none">cpp</textarea>
-      <input type="Submit" value="Submit" class="btn btn-success" id="submit-btn" />
+      <textarea id="get-language" name="language" style="display: none">
+cpp</textarea
+      >
+      <input
+        type="Submit"
+        value="Submit"
+        class="btn btn-success"
+        id="submit-btn"
+      />
       <button
         class="btn btn-primary"
         type="button"
         disabled
         style="display: none"
-        id="loading-btn">
+        id="loading-btn"
+      >
         <span
           class="spinner-border spinner-border-sm"
           role="status"
-          aria-hidden="true"></span>
+          aria-hidden="true"
+        ></span>
         Testing...
       </button>
     </center>
@@ -60,11 +71,14 @@
 </div>
 <br />
 <textarea id="problem-id" style="display: none">{{ problem.id }}</textarea>
-<textarea id="default-template" style="display: none">{{ problem.template }}</textarea>
+<textarea id="default-template" style="display: none">
+{{ problem.template }}</textarea
+>
 <script
   src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.4/ace.js"
   integrity="sha512-W2EhLZb9bxEATRhug+NU1OHCaM0hovRJbR7BvUNEytEWYJKxZiL4fGz3tiPpid0nycdwW7EnGlSonxvrs+EU6g=="
   crossorigin="anonymous"
-  referrerpolicy="no-referrer"></script>
+  referrerpolicy="no-referrer"
+></script>
 <script src="{% static 'code-editor.js' %}"></script>
 {% endblock %}

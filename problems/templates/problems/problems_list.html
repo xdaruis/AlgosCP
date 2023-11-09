@@ -5,7 +5,9 @@
   <a class="btn btn-success" href="/admin/problems/problem/">Edit</a>
   <br /><br />
   {% endif %}
-  <table class="table table-hover table-bordered border-secondary table-sm caption-top">
+  <table
+    class="table table-hover table-bordered border-secondary table-sm caption-top"
+  >
     <caption>
       List of problems
     </caption>
@@ -18,7 +20,9 @@
       {% for problem in problems %}
       <tr>
         <td>
-          <a class="nav-link" href="{% url 'display_problem' problem.name|slugify %}"
+          <a
+            class="nav-link"
+            href="{% url 'display_problem' problem.name|slugify %}"
             >{{ problem.title }}</a
           >
         </td>
