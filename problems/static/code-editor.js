@@ -24,25 +24,7 @@ const languages = {
   python: 'python',
 };
 
-var socket = new WebSocket('ws://' + window.location.host + '/ws/solution/');
-
-socket.onopen = function (e) {
-  console.log('[open] Connection established');
-};
-
-socket.onmessage = function (event) {
-  console.log(`[message] Data received from server: ${event.data}`);
-};
-
-socket.onclose = function (event) {
-  if (event.wasClean) {
-    console.log(
-      `[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`,
-    );
-  } else {
-    console.log('[close] Connection died');
-  }
-};
+const socket = new WebSocket('ws://' + window.location.host + '/ws/solution/');
 
 document.addEventListener('submit', () => {
   document.getElementById('code-editor').innerHTML = aceEditor.getValue();
@@ -50,7 +32,6 @@ document.addEventListener('submit', () => {
     languages[languageSelect.value];
   document.getElementById('submit-btn').style.display = 'none';
   document.getElementById('loading-btn').style.display = 'inline-block';
-  socket.send('Form submitted');
   window.addEventListener('pageshow', function (e) {
     if (e.persisted) {
       document.getElementById('submit-btn').style.display = 'inline-block';
